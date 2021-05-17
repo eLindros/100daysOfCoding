@@ -2,6 +2,10 @@ from turtle import Turtle
 
 STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVING_DISTANCE = 20
+UP = 90
+DOWN = 270
+LEFT = 180
+RIGHT = 0
 
 
 class Snake():
@@ -9,17 +13,41 @@ class Snake():
     def __init__(self) -> None:
         self.segments = []
         self.create_snake()
-       
+        self.snake_head = self.segments[0]
+
+    def create_segment(self, position, heading=0):
+        snake_part = Turtle(shape="square")
+        snake_part.color("white")
+        snake_part.penup()
+        snake_part.goto(position)
+        self.segments.append(snake_part)
+
     
     def create_snake(self):
         for position in STARTING_POSITIONS:
-            snake_part = Turtle(shape="square")
-            snake_part.color("white")
-            snake_part.penup()
-            snake_part.goto(position)
-            self.segments.append(snake_part)
+          self.create_segment(position)
+    
+    def grow_snake(self):
+      snake_tail = self.segments[-1]
+      tail_position = snake_tail.position()
+      tail_heading = snake_tail.heading()
+      
+      if tail_heading == UP:
+        position = (tail_position[0], tail_position[1] - 20)
+      elif tail_heading == DOWN:
+        position = (tail_position[0], tail_position[1] + 20)
+      elif tail_heading == LEFT:
+        position = (tail_position[0] + 20, tail_position[1])
+      elif tail_heading == RIGHT:
+        position = (tail_position[0] - 20 , tail_position[1])
+        
+      self.create_segment(position, tail_heading)
 
-        self.snake_head = self.segments[0]
+    def clear(self):
+      for segment in self.segments:
+        segment.reset()
+      
+      self.__init__()
 
     def move(self):
         for seg_num in range(len(self.segments)-1, 0, -1):
@@ -30,8 +58,24 @@ class Snake():
 
         self.snake_head.forward(MOVING_DISTANCE)
 
+    def xcor(self):
+      return self.snake_head.xcor()
+        
+    def ycor(self):
+      return self.snake_head.ycor()
+
     def up(self):
-        self.snake_head.left(90)
+        if self.snake_head.heading() != DOWN:
+          self.snake_head.setheading(UP)
 
     def down(self):
-        self.snake_head.right(90)
+        if self.snake_head.heading() != UP:
+          self.snake_head.setheading(DOWN)
+
+    def left(self):
+        if self.snake_head.heading() != RIGHT:
+          self.snake_head.setheading(LEFT)
+
+    def right(self):
+        if self.snake_head.heading() != LEFT:
+          self.snake_head.setheading(RIGHT)
