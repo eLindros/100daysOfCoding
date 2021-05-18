@@ -1,6 +1,6 @@
-from snake import Snake
-from scoreboard import Scoreboard
-from food import Food
+from snake_game.snake import Snake
+from snake_game.scoreboard import Scoreboard
+from snake_game.food import Food
 
 class Game:
   

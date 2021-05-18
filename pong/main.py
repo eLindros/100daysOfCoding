@@ -1,5 +1,5 @@
 from turtle import Screen
-from paddle import Paddle
+from pong.paddle import Paddle
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -17,5 +17,11 @@ paddle = Paddle()
 
 screen.onkey(key="Up", fun=paddle.up)
 screen.onkey(key="Down", fun=paddle.down)
+screen.onkey(key="c", fun=screen.bye)
+
+is_game_on = True
+
+while is_game_on:
+    screen.update()
 
 screen.exitonclick()

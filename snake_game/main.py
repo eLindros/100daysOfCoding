@@ -1,6 +1,6 @@
 from turtle import Screen
 import time
-from game import Game
+from snake_game.game import Game
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = SCREEN_WIDTH
