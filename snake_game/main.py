@@ -1,9 +1,6 @@
 from turtle import Screen
 import time
-from snake import Snake
 from game import Game
-from food import Food
-from scoreboard import Scoreboard
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = SCREEN_WIDTH
@@ -15,59 +12,63 @@ screen.title("Snake Game")
 screen.tracer(0)
 screen.listen()
 
+
 def start_game():
-  snake = Snake()
-  game = Game()
-  game.set_game_on()
-  return (snake, game)
+    game = Game()
+    game.set_game_on()
+    return game
 
 
+def is_snake_on_edge(game, screen_width, screen_height):
+    xcor = game.snake.xcor()
+    ycor = game.snake.ycor()
+    edge_up = screen_height/2 - 10
+    edge_down = -screen_height/2 - 10
+    edge_left = -screen_width/2 - 10
+    edge_right = screen_width/2 - 10
 
-def is_snake_on_edge(snake, game, screen_width, screen_height):
-  xcor = snake.xcor()
-  ycor = snake.ycor()
-  edge_up = screen_height/2
-  edge_down = -screen_height/2
-  edge_left = -screen_width/2
-  edge_right = screen_width/2
-
-  if xcor < edge_left or \
-     xcor > edge_right or \
-     ycor < edge_down or \
-     ycor > edge_up:
-    game.set_game_off()
+    if xcor < edge_left or \
+       xcor > edge_right or \
+       ycor < edge_down or \
+       ycor > edge_up:
+        game.set_game_off()
+        game.scoreboard.game_over()
 
 
-new_game = start_game()
+game = start_game()
 
-snake = new_game[0]
-game = new_game[1]
-food = Food()
-scoreboard = Scoreboard()
 
 def reset_game():
-  snake.clear()
-  food.refresh()
-  scoreboard.reset()
+    game.reset()
 
-screen.onkey(key="Up", fun=snake.up)
-screen.onkey(key="Down", fun=snake.down)
-screen.onkey(key="Left", fun=snake.left)
-screen.onkey(key="Right", fun=snake.right)
+def exit_game():
+    game.is_game_exited = True
+
+screen.onkey(key="Up", fun=game.snake.up)
+screen.onkey(key="Down", fun=game.snake.down)
+screen.onkey(key="Left", fun=game.snake.left)
+screen.onkey(key="Right", fun=game.snake.right)
 screen.onkey(key="c", fun=game.set_game_off)
 screen.onkey(key="r", fun=reset_game)
+screen.onkey(key="x", fun=exit_game)
 
+is_game_exited = False
 
-while game.is_game_on:
-    screen.update()
-    time.sleep(0.2)
-    snake.move()
-    is_snake_on_edge(snake, game, SCREEN_WIDTH, SCREEN_HEIGHT)
+while not game.is_game_exited:
+    while game.is_game_on:
+        screen.update()
+        time.sleep(0.1)
+        game.snake.move()
+        is_snake_on_edge(game, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    if snake.snake_head.distance(food) < 20:
-      food.refresh()
-      snake.grow_snake()
-      scoreboard.increase_score()
+        if game.snake.snake_head.distance(game.food) < 20:
+            game.food.refresh()
+            game.snake.grow_snake()
+            game.scoreboard.increase_score()
 
+        for segment in game.snake.segments[2:]:
+            if game.snake.snake_head.distance(segment) < 10:
+                game.set_game_off()
+                game.scoreboard.game_over()
 
 screen.exitonclick()

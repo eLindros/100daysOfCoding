@@ -15,7 +15,7 @@ class Snake():
         self.create_snake()
         self.snake_head = self.segments[0]
 
-    def create_segment(self, position, heading=0):
+    def create_segment(self, position):
         snake_part = Turtle(shape="square")
         snake_part.color("white")
         snake_part.penup()
@@ -30,18 +30,7 @@ class Snake():
     def grow_snake(self):
       snake_tail = self.segments[-1]
       tail_position = snake_tail.position()
-      tail_heading = snake_tail.heading()
-      
-      if tail_heading == UP:
-        position = (tail_position[0], tail_position[1] - 20)
-      elif tail_heading == DOWN:
-        position = (tail_position[0], tail_position[1] + 20)
-      elif tail_heading == LEFT:
-        position = (tail_position[0] + 20, tail_position[1])
-      elif tail_heading == RIGHT:
-        position = (tail_position[0] - 20 , tail_position[1])
-        
-      self.create_segment(position, tail_heading)
+      self.create_segment(tail_position)
 
     def clear(self):
       for segment in self.segments:
