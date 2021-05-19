@@ -1,1 +1,1 @@
-from pong import main
+from snake_game import main

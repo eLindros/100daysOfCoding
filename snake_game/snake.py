@@ -22,21 +22,20 @@ class Snake():
         snake_part.goto(position)
         self.segments.append(snake_part)
 
-    
     def create_snake(self):
         for position in STARTING_POSITIONS:
-          self.create_segment(position)
-    
-    def grow_snake(self):
-      snake_tail = self.segments[-1]
-      tail_position = snake_tail.position()
-      self.create_segment(tail_position)
+            self.create_segment(position)
 
-    def clear(self):
-      for segment in self.segments:
-        segment.reset()
-      
-      self.__init__()
+    def grow_snake(self):
+        snake_tail = self.segments[-1]
+        tail_position = snake_tail.position()
+        self.create_segment(tail_position)
+
+    def reset(self):
+        for segment in self.segments:
+            segment.reset()
+
+        self.__init__()
 
     def move(self):
         for seg_num in range(len(self.segments)-1, 0, -1):
@@ -48,23 +47,23 @@ class Snake():
         self.snake_head.forward(MOVING_DISTANCE)
 
     def xcor(self):
-      return self.snake_head.xcor()
-        
+        return self.snake_head.xcor()
+
     def ycor(self):
-      return self.snake_head.ycor()
+        return self.snake_head.ycor()
 
     def up(self):
         if self.snake_head.heading() != DOWN:
-          self.snake_head.setheading(UP)
+            self.snake_head.setheading(UP)
 
     def down(self):
         if self.snake_head.heading() != UP:
-          self.snake_head.setheading(DOWN)
+            self.snake_head.setheading(DOWN)
 
     def left(self):
         if self.snake_head.heading() != RIGHT:
-          self.snake_head.setheading(LEFT)
+            self.snake_head.setheading(LEFT)
 
     def right(self):
         if self.snake_head.heading() != LEFT:
-          self.snake_head.setheading(RIGHT)
+            self.snake_head.setheading(RIGHT)

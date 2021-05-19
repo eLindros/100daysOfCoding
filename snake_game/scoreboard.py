@@ -11,8 +11,8 @@ class Scoreboard(Turtle):
         super().__init__()
         self.hideturtle()
         self.color("white")
-        self.goto(0, POSITION_Y)
         self.penup()
+        self.goto(0, POSITION_Y)
         self.score = 0
         self.update_score()
 
